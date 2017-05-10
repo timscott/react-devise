@@ -1,0 +1,55 @@
+{
+  "name": "react-devise",
+  "version": "0.0.3",
+  "description": "A react front-end for a ruby on rails devise authentication server.'",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha --reporter spec",
+    "prepublish": "node_modules/babel-cli/bin/babel.js src --out-dir lib"
+  },
+  "babel": {
+    "presets": [
+      "react",
+      "es2015",
+      "stage-0"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/timscott/react-devise.git"
+  },
+  "keywords": [
+    "react",
+    "devise",
+    "ruby",
+    "authentication",
+    "rails",
+    "redux",
+    "redux-form"
+  ],
+  "author": "Tim Scott <tscott@lunaversesoftware.com> (=)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/timscott/react-devise/issues"
+  },
+  "homepage": "https://github.com/timscott/react-devise#readme",
+  "dependencies": {
+    "es6-error": "^4.0.2",
+    "fetch-bluebird": "^1.0.3",
+    "jwt-decode": "^2.2.0",
+    "react": "^15.5.4",
+    "react-redux": "^5.0.4",
+    "react-router-dom": "^4.1.1",
+    "redux": "^3.6.0",
+    "redux-form": "^6.6.3",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1"
+  }
+}
