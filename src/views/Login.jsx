@@ -7,7 +7,7 @@ import {reduxForm, Field, SubmissionError} from 'redux-form';
 
 const LoginForm = reduxForm({
   form: 'login'
-})(({handleSubmit, submitting, error, onSubmit, auth: {messages, formPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
+})(({handleSubmit, submitting, error, onSubmit, auth: {messages, viewPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
   const submit = data => {
     return onSubmit(data).catch(UnauthorizedError, () => {
       throw new SubmissionError({
@@ -46,7 +46,7 @@ const Login = ({currentUser, doLogin, location: {state: {alert, from: {pathname:
       return <Redirect to={returnTo || '/'} />;
     }
   }
-  const {auth: {AuthLinks, formPlugin: {View, Heading, Alert}}} = rest;
+  const {auth: {AuthLinks, viewPlugin: {View, Heading, Alert}}} = rest;
   return (
     <View>
       <Heading>

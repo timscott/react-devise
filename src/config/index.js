@@ -1,6 +1,6 @@
 import React from 'react';
 import defaultMessages from './defaultMessages';
-import formPluginPlain from './formPluginPlain';
+import viewPluginPlain from './viewPluginPlain';
 import {AuthLinks} from '../views';
 
 let instance;
@@ -10,15 +10,15 @@ class Config {
     clientResourceName = 'users',
     apiResourceName = 'auth',
     apiHost,
-    formPlugins = [],
+    viewPlugins = [],
     messages = {}
   } = {}) {
-    const defaultFormPlugin = formPluginPlain.plugin();
-    this.formPlugin = Object.assign({}, defaultFormPlugin, ...formPlugins);
+    const defaultviewPlugin = viewPluginPlain.plugin();
+    this.viewPlugin = Object.assign({}, defaultviewPlugin, ...viewPlugins);
     const AuthLinksComponent = props => {
       return <AuthLinks
         resourceName={clientResourceName}
-        {...this.formPlugin}
+        {...this.viewPlugin}
         {...props}
       />;
     };
@@ -30,7 +30,7 @@ class Config {
   }
   get auth() {
     return {
-      formPlugin: this.formPlugin,
+      viewPlugin: this.viewPlugin,
       clientResourceName: this.clientResourceName,
       messages: this.messages,
       AuthLinks: this.AuthLinks

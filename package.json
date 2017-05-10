@@ -1,7 +1,7 @@
 {
   "name": "react-devise",
-  "version": "0.0.3",
-  "description": "A react front-end for a ruby on rails devise authentication server.'",
+  "version": "0.0.5",
+  "description": "A react front-end for a ruby on rails devise authentication server.",
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha --reporter spec",
@@ -27,7 +27,7 @@
     "redux",
     "redux-form"
   ],
-  "author": "Tim Scott <tscott@lunaversesoftware.com> (=)",
+  "author": "Tim Scott <tscott@lunaversesoftware.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/timscott/react-devise/issues"

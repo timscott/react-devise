@@ -6,7 +6,7 @@ import {signUp, formAction} from '../actions';
 
 const SignUpForm = reduxForm({
   form: 'signUp'
-})(({error, submitting, submitSucceeded, handleSubmit, onSubmit, auth: {messages: {signUpSucceeded: signUpSucceededMessage}, formPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
+})(({error, submitting, submitSucceeded, handleSubmit, onSubmit, auth: {messages: {signUpSucceeded: signUpSucceededMessage}, viewPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
   if (submitSucceeded) {
     return <Redirect to={{
       pathname: '/',
@@ -44,7 +44,7 @@ const SignUpForm = reduxForm({
 });
 
 const SignUp = ({doSignUp, ...rest}) => {
-  const {auth: {AuthLinks, formPlugin: {View, Heading}}} = rest;
+  const {auth: {AuthLinks, viewPlugin: {View, Heading}}} = rest;
   return (
     <View>
       <Heading>

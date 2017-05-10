@@ -5,7 +5,7 @@ import {requestReconfirm, formAction} from '../actions';
 
 const RequestReconfirmForm = reduxForm({
   form: 'requestReconfirmPassword'
-})(({handleSubmit, submitting, submitSucceeded, error, onSubmit, auth: {messages, formPlugin: {renderInput, SubmitButton, FormError, Form}}}) => {
+})(({handleSubmit, submitting, submitSucceeded, error, onSubmit, auth: {messages, viewPlugin: {renderInput, SubmitButton, FormError, Form}}}) => {
   if (submitSucceeded) {
     return <p>{messages.reqeustReconfirmSucceeded}</p>;
   }
@@ -26,7 +26,7 @@ const RequestReconfirmForm = reduxForm({
 });
 
 const RequestReconfirm = ({doRequestReconfirm, ...rest}) => {
-  const {auth: {AuthLinks, formPlugin: {View, Heading}}} = rest;
+  const {auth: {AuthLinks, viewPlugin: {View, Heading}}} = rest;
   return (
     <View>
       <Heading>

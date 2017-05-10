@@ -5,7 +5,7 @@ import {requestResetPassword, formAction} from '../actions';
 
 const RequestResetPasswordForm = reduxForm({
   form: 'requestResetPassword'
-})(({handleSubmit, submitting, submitSucceeded, error, onSubmit, auth: {messages, formPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
+})(({handleSubmit, submitting, submitSucceeded, error, onSubmit, auth: {messages, viewPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
   if (submitSucceeded) {
     return <p>
       {messages.requestResetPasswordSucceeded}
@@ -28,7 +28,7 @@ const RequestResetPasswordForm = reduxForm({
 });
 
 const RequestResetPassword = ({doRequestResetPassword, ...rest}) => {
-  const {auth: {AuthLinks, formPlugin: {View, Heading}}} = rest;
+  const {auth: {AuthLinks, viewPlugin: {View, Heading}}} = rest;
   return (
     <View>
       <Heading>

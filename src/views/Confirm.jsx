@@ -34,7 +34,7 @@ class Confirm extends Component {
     if (this.state.confirming) {
       return <div>Confirming...</div>;
     }
-    const {auth: {messages: {confirmSucceeded: confirmSucceededMessage, confirmContinueLinkText, confirmFailed: confirmFailedMessage}, formPlugin: {View, Heading, FormError}}} = this.props;
+    const {auth: {messages: {confirmSucceeded: confirmSucceededMessage, confirmContinueLinkText, confirmFailed: confirmFailedMessage}, viewPlugin: {View, Heading, FormError}}} = this.props;
     if (this.state.errors) {
       const {auth: {AuthLinks}} = this.props;
       return (
