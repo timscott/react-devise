@@ -4,7 +4,7 @@ React Devise
 =========================
 For some time Devise has been the go-to authentication library for Rails apps. Just drop Devise into your Rails app, make a few tweaks, then get on with building the awesome business features of your app. But when we develop an SPA  app with React for the front end and Rails for the API, must we leave Devise behind?
 
-It turns out it's not very hard to purpose Devise as an authentication backend. The bigger job is to replicate all the view-related functionality Devise use to give us out of the box for server rendered apps.
+It turns out it's not very hard to purpose Devise as an authentication backend. The bigger job is to replicate all the view-related functionality Devise gave us out of the box for server rendered apps.
 
 Enter **React Devise**. The goal of this library is to reduce the friction of adding authentication to a new React/Rails app. We aim to reduce it to the very low level that Rails developers have come to expect while maintaining flexibility to make it your own.
 
@@ -36,12 +36,12 @@ Use ```PrivateRoute``` for any route that requires authorization. If the user vi
 
 ```javascript
 import {createStore, combineReducers} from 'redux';
-import {initReactDevise, AuthRoutes, PrivateRoute} from 'react-devise';
+import {Provider} from 'react-redux';
 import {Router, Route, Switch} from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
-import {Provider} from 'react-redux';
-import reactDeviseReducers from 'react-devise/lib/reducers';
 import reducers from './reducers'
+import {initReactDevise, AuthRoutes, PrivateRoute} from 'react-devise';
+import reactDeviseReducers from 'react-devise/lib/reducers';
 
 const {clientResourceName} = initReactDevise()();
 
@@ -109,19 +109,18 @@ initReactDevise({
 });
 ```
 
-| Setting               | Default Value | Description                                                                        |
-| ----------------------| ------------- |------------------------------------------------------------------------------------|
-| `clientResourceName`  | "users"       | The first node in the route to each auth view.                             |
-| `apiResourceName`     | "auth"        | The resource name used by devise on the server. The first node in the path of API calls.                                    |
+| Setting               | Default Value | Description                                                                              |
+| ----------------------| ------------- |------------------------------------------------------------------------------------------|
+| `clientResourceName`  | "users"       | The first node in the route to each auth view. |
+| `apiResourceName`     | "auth"        | The resource name used by Devise on the server. The first node in the path of API calls. |
 | `apiHost`             | `undefined`   | Omit unless your devise API is host on a different domain than the website. |
-| `viewPlugins`         | []            | Use view plugins to inject custom components into React Devise views.              |
-| `messages`            | {}            | Override the default messages used by React Devise.                                |
+| `viewPlugins`         | []            | Use one or more view plugins to inject custom components into React Devise views.<br><br>View plugins are merged in order *after* the default plugin. Taking the code sample above, ```myCustomPlugin``` supersede ```ReactDeviseMaterialUI``` plugin, which in turn supersede the default plugin.<br><br>Find the default plugin [here]( https://github.com/timscott/react-devise/blob/master/src/config/viewPluginPlain.js). |
+| `messages`            | {}            | Override the default messages used by React Devise. Default messages are [here](https://github.com/timscott/react-devise/blob/master/src/config/defaultMessages.js). |
 
-Default messages are [here](https://github.com/timscott/react-devise/blob/master/src/config/defaultMessages.js).
 
-View plugins will be merged in order with the first being the default plugin. So in the code sample above, ```myCustomPlugin``` supersede any common fields ```ReactDeviseMaterialUI``` plugin, which in turn supersede any common fields in the default plugin. Find the default plugin [here]( https://github.com/timscott/react-devise/blob/master/src/config/viewPluginPlain.js).
+### Styled Components
 
-React Devise plays nicely with ```styled-components```. For example, ```UnstlyedList``` in the prior code sample might be:
+React Devise plays nicely with [styled-components](https://github.com/styled-components/styled-components). For example, ```UnstlyedList``` (in the prior code sample) might be:
 
 ```javascript
 import styled from 'styled-components';
@@ -142,7 +141,7 @@ export default UnstyledList;
 
 ## Accessing Configuration in Your Components
 
-You can access React Devise config and also the ```AuthLinks``` component in your components by using ```withAuth```. For example:
+You can access React Devise config and also the ```AuthLinks``` component in your components by using ```withAuth``` like so:
 
 ```javascript
 import React from 'react';
@@ -216,7 +215,7 @@ class CustomAuthFailure < Devise::FailureApp
 end
 ```
 
-Next, we need to change the URLs in our emails to be the *client side* routes:
+Next, we need to change the URLs in our emails to be the *client side* routes. (NOTE: Replace "user" and "users" if you set a different ```clientResourceName```.)
 
 ```ruby
 # /app/helpers/users_mailer_helper.rb
