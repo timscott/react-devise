@@ -2,15 +2,15 @@ ATTENTON: For now, this must be considered experimental software and not to be u
 
 React Devise
 =========================
-For some time Devise has been the go-to library for Rails developers. Just drop it into your Rails app, make a few minor tweaks, and get on with building the awesome business features of your app. But as many of us move from server side rendering to SPA with React, what now? Give up all the awesome stuff Devise does for you?
+For some time Devise has been the go-to authentication library for Rails apps. Just drop Devise into your Rails app, make a few tweaks, then get on with building the awesome business features of your app. But when we develop an SPA  app with React for the front end and Rails for the API, must we leave Devise behind?
 
-It turns out, it's not very hard to purpose Devise as an authentication backend for a single page app. The bigger job is to replicate all the view-related functionality Devise used to give us out of the box. 
+It turns out it's not very hard to purpose Devise as an authentication backend. The bigger job is to replicate all the view-related functionality Devise use to give us out of the box for server rendered apps.
 
-Enter **React Devise**. The goal of this library is to reduce the friction of adding authentication to a new React app with a Rails API backend — reduce it to the very low level that Rails developers have come to expect — while maintaining the flexbility to make it your own.
+Enter **React Devise**. The goal of this library is to reduce the friction of adding authentication to a new React/Rails app. We aim to reduce it to the very low level that Rails developers have come to expect while maintaining flexibility to make it your own.
 
 ## Dependencies
 
-React Devise is an opinionated library. It has deep dependencies on some popular React modules. The most significant are:
+React Devise has deep dependencies on some popular React modules. The most significant are:
 
 * [react-redux](https://github.com/reactjs/react-redux)
 * [react-router](https://github.com/ReactTraining/react-router)
@@ -30,7 +30,7 @@ Call ```initReactDevise``` as early as possible in your application, and before 
 
 Add ```reactDeviseReducers``` to your store.
 
-Within the ```Router``` element place ```AuthRoutes``` to tell the router how to route to the various auth views. Set the path to ```clientResourceName``` which is needed to tell the router to resolve down to full auth route.
+Within the ```Router``` element place ```AuthRoutes```. Set the path to ```clientResourceName``` to cause the router to select among the full auth routes.
 
 Use ```PrivateRoute``` for any route that requires authorization. If the user visits a private route while not authenticated, he will be redirected to the login route.
 
@@ -68,7 +68,7 @@ const App = () => {
 }
 ```
 
-The default value of ```clientResourceName``` is "users" so the default auth routes are:
+Given that the default value of ```clientResourceName``` is "users" the default auth routes are:
 
 * /users/login
 * /users/sign-up/
@@ -85,20 +85,23 @@ To customize the appearance and behavior of React Devise, pass a settings object
 import ReactDeviseMaterialUI from 'react-devise-material-ui';
 import {Form, Alert, UnstyledList, UnstyledListItem, FormError, AuthHeading, AuthViewContainer} from '../components';
 
+const myCustomPlugin = {
+  Form,
+  FormError,
+  Alert,
+  AuthLinksList: UnstyledList,
+  AuthLinksListItem: UnstyledListItem,
+  Heading: AuthHeading,
+  View: AuthViewContainer
+};
+
 initReactDevise({
   clientResourceName: 'customers',
   apiResourceName: 'api/auth',
   apiHost: 'http://auth.example.com',
   viewPlugins: [
-    ReactDeviseMaterialUI.plugin(), {
-      Form,
-      FormError,
-      Alert,
-      AuthLinksList: UnstyledList,
-      AuthLinksListItem: UnstyledListItem,
-      Heading: AuthHeading,
-      View: AuthViewContainer
-    }
+    ReactDeviseMaterialUI.plugin(),
+    myCustomPlugin
   ],
   messages: {
     loginFailed: 'Whoa there. Bad login!'
@@ -109,16 +112,16 @@ initReactDevise({
 | Setting               | Default Value | Description                                                                        |
 | ----------------------| ------------- |------------------------------------------------------------------------------------|
 | `clientResourceName`  | "users"       | The first node in the route to each auth view.                             |
-| `apiResourceName`     | "auth"        | The resource name used by devise on the server.                                    |
-| `apiHost`             | `undefined`   | Leave blank unless your devise API is host on a different domain than the website. |
+| `apiResourceName`     | "auth"        | The resource name used by devise on the server. The first node in the path of API calls.                                    |
+| `apiHost`             | `undefined`   | Omit unless your devise API is host on a different domain than the website. |
 | `viewPlugins`         | []            | Use view plugins to inject custom components into React Devise views.              |
 | `messages`            | {}            | Override the default messages used by React Devise.                                |
 
-Default messages are here: https://github.com/timscott/react-devise/blob/master/src/config/defaultMessages.js.
+Default messages are [here](https://github.com/timscott/react-devise/blob/master/src/config/defaultMessages.js).
 
-View plugins will be flattened in order by ```Object.assign```. Prior to any plugins you specify is a default plugin. Find it here: https://github.com/timscott/react-devise/blob/master/src/config/viewPluginPlain.js. Any items you do not include in your plugins will fall back to the default.
+View plugins will be merged in order with the first being the default plugin. So in the code sample above, ```myCustomPlugin``` supersede any common fields ```ReactDeviseMaterialUI``` plugin, which in turn supersede any common fields in the default plugin. Find the default plugin [here]( https://github.com/timscott/react-devise/blob/master/src/config/viewPluginPlain.js).
 
-React Devise plays nicely with ```styled-components```. For example, ```UnstlyedList``` might be:
+React Devise plays nicely with ```styled-components```. For example, ```UnstlyedList``` in the prior code sample might be:
 
 ```javascript
 import styled from 'styled-components';
@@ -139,7 +142,7 @@ export default UnstyledList;
 
 ## Accessing Configuration in Your Components
 
-You can access React Devise config and also the ```AuthLinks``` component in your components by using ```withAuth```. The following will render the ```AuthLinks``` in your view.
+You can access React Devise config and also the ```AuthLinks``` component in your components by using ```withAuth```. For example:
 
 ```javascript
 import React from 'react';
@@ -183,11 +186,13 @@ networkInterface.use([{
 }]);
 ```
 
+```addAuthorizationHeaderToRequest``` takes a ```request``` and an optional ```next``` callback.
+
 ## Devise Server Setup
 
-This will eventually become a gem. For now, you have to set it up yourself.
+Eventually we want to create a gem to avoid repeating this boilerplate. For now, you have to set it up yourself.
 
-First, we might need to set a custom path in our routes to match the ```apiResourceName```.
+First, we might need to set a custom path in our routes to match the ```apiResourceName``` if it's not the same as your user model name.
 
 ```ruby
 # routes.rb
@@ -197,7 +202,7 @@ devise_for :users, path: :auth
 
 Next, we need to change auth failure behavior:
 
-```ruby 
+```ruby
 # /app/controllers/custom_auth_failure.rb
 
 class CustomAuthFailure < Devise::FailureApp
@@ -211,7 +216,7 @@ class CustomAuthFailure < Devise::FailureApp
 end
 ```
 
-Next, we need our emails to have URLs to the client side routes:
+Next, we need to change the URLs in our emails to be the *client side* routes:
 
 ```ruby
 # /app/helpers/users_mailer_helper.rb
@@ -265,13 +270,16 @@ Finally, apply some settings in your devise initializer:
 config.warden do |manager|
   manager.failure_app = CustomAuthFailure
 end
-  
+
 config.mailer = 'UsersMailer'
-  
+
+config.navigational_formats = [:json]
+
 ```
 
 ## To Do
 
+* Create a ruby gem
 * Ouath support
 * Support multiple resource types
 * Support all devise views
