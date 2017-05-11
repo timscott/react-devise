@@ -118,6 +118,25 @@ Default messages are here: https://github.com/timscott/react-devise/blob/master/
 
 View plugins will be flattened in order by ```Object.assign```. Prior to any plugins you specify is a default plugin. Find it here: https://github.com/timscott/react-devise/blob/master/src/config/viewPluginPlain.js. Any items you do not include in your plugins will fall back to the default.
 
+React Devise plays nicely with ```styled-components```. For example, ```UnstlyedList``` might be:
+
+```javascript
+import styled from 'styled-components';
+
+const UnstyledList = styled.ul`
+  list-style: none;
+  padding: 0;
+  a {
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+`;
+
+export default UnstyledList;
+```
+
 ## Accessing Configuration in Your Components
 
 You can access React Devise config and also the ```AuthLinks``` component in your components by using ```withAuth```. The following will render the ```AuthLinks``` in your view.
