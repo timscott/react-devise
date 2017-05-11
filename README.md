@@ -168,7 +168,7 @@ export default connect(mapStateToProps)(withAuth(Home));
 
 ## Middleware for Clients
 
-Clients like [Apollo](https://github.com/apollographql/apollo) handle data access for you. React Devise provides middleware to add authentication to all requests. For example.
+Clients like [Apollo](https://github.com/apollographql/apollo) handle data access for you. React Devise provides middleware to add authentication to all requests. For example:
 
 ```javascript
 import ApolloClient, {createNetworkInterface} from 'apollo-client';
@@ -198,7 +198,7 @@ devise_for :users, path: :auth
 Next, we need to change auth failure behavior:
 
 ```ruby 
-# custom_auth_failure.rb
+# /app/controllers/custom_auth_failure.rb
 
 class CustomAuthFailure < Devise::FailureApp
 
@@ -214,7 +214,7 @@ end
 Next, we need our emails to have URLs to the client side routes:
 
 ```ruby
-# users_mailer_helper.rb
+# /app/helpers/users_mailer_helper.rb
 
 module UsersMailerHelper
 
@@ -238,7 +238,7 @@ end
 ```
 
 ```ruby
-# users_mailer.rb
+# /app/mailers/users_mailer.rb
 
 class UsersMailer < Devise::Mailer
   helper :users_mailer # gives access to all helpers defined within `mailer_helper`.
@@ -262,11 +262,11 @@ Finally, apply some settings in your devise initializer:
 ```ruby
 # in your devise initializer
 
-  config.warden do |manager|
-    manager.failure_app = CustomAuthFailure
-  end
+config.warden do |manager|
+  manager.failure_app = CustomAuthFailure
+end
   
-  config.mailer = 'UsersMailer'
+config.mailer = 'UsersMailer'
   
 ```
 
