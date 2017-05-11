@@ -192,7 +192,36 @@ networkInterface.use([{
 
 Eventually we want to create a gem to avoid repeating this boilerplate. For now, you have to set it up yourself.
 
-First, we might need to set a custom path in our routes to match the ```apiResourceName``` if it's not the same as your user model name.
+First, we'll use the [devise-jwt](https://github.com/waiting-for-dev/devise-jwt) gem.
+
+```ruby
+# Gemfile
+
+ gem 'devise-jwt'
+```
+
+Add the ```devise-jwt``` bits in the user model (or whatever your authenticated resource is).
+
+```ruby
+# /app/models/user.rb
+
+class User < ApplicationRecord
+  devise :database_authenticatable, :registerable, :recoverable, :trackable, :validatable, :confirmable,
+    :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null
+
+  def jwt_payload
+    {
+      user_id: id,
+      email: email,
+      firstName: first_name,
+      lastName: last_name
+    }
+  end
+
+end
+```
+
+Next, we might need to set a custom path in our routes to match the ```apiResourceName``` if it's not the same as your user model name.
 
 ```ruby
 # routes.rb
