@@ -81,7 +81,7 @@ The default value of ```clientResourceName``` is "users" so the default auth rou
 
 To customize the appearance and behavior of React Devise, pass a settings object into ```initReactDevise```.
 
-```
+```javascript
 import ReactDeviseMaterialUI from 'react-devise-material-ui';
 import {Form, Alert, UnstyledList, UnstyledListItem, FormError, AuthHeading, AuthViewContainer} from '../components';
 
