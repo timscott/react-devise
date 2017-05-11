@@ -11,10 +11,11 @@ class Config {
     apiResourceName = 'auth',
     apiHost,
     viewPlugins = [],
+    defaultViewPluginSettings = {},
     messages = {}
   } = {}) {
-    const defaultviewPlugin = viewPluginPlain.plugin();
-    this.viewPlugin = Object.assign({}, defaultviewPlugin, ...viewPlugins);
+    const defaultViewPlugin = viewPluginPlain.plugin(defaultViewPluginSettings);
+    this.viewPlugin = Object.assign({}, defaultViewPlugin, ...viewPlugins);
     const AuthLinksComponent = props => {
       return <AuthLinks
         resourceName={clientResourceName}
