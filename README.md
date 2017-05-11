@@ -2,15 +2,15 @@ ATTENTON: For now, this must be considered experimental software and not to be u
 
 React Devise
 =========================
-For some time Devise has been the go-to library for Rails developers. Just drop it into your Rails app, make a few minor tweaks, and get on with building the awesome business features of your app. But as many of us move from server side rendering to SPA with React, what now? Give up all the awesome stuff devise does for you?
+For some time Devise has been the go-to library for Rails developers. Just drop it into your Rails app, make a few minor tweaks, and get on with building the awesome business features of your app. But as many of us move from server side rendering to SPA with React, what now? Give up all the awesome stuff Devise does for you?
 
 It turns out, it's not very hard to purpose Devise as an authentication backend for a single page app. The bigger job is to replicate all the view-related functionality Devise used to give us out of the box. 
 
-Enter **React Devise**. The goal of this library is to reduce the friction of adding authentication to a new app — reduce it to the very low level that Rails developers have come to expect — while maintaining the flexbility to make it your own.
+Enter **React Devise**. The goal of this library is to reduce the friction of adding authentication to a new React app with a Rails API backend — reduce it to the very low level that Rails developers have come to expect — while maintaining the flexbility to make it your own.
 
 ## Dependencies
 
-React Devise is an opinionated module. It has deep dependencies on some popular React modules. The most significant are:
+React Devise is an opinionated library. It has deep dependencies on some popular React modules. The most significant are:
 
 * [react-redux](https://github.com/reactjs/react-redux)
 * [react-router](https://github.com/ReactTraining/react-router)
@@ -28,7 +28,9 @@ yarn add react-devise
 
 Call ```initReactDevise``` as early as possible in your application, and before using any other part of React Devise. This function returns a function which returns the config object.
 
-Within ```Router``` place ```AuthRoutes``` to tell the router how to route to the various auth views. Set the path to ```clientResourceName``` value to tell the router to switch on the full auth routes.
+Add ```reactDeviseReducers``` to your store.
+
+Within the ```Router``` element place ```AuthRoutes``` to tell the router how to route to the various auth views. Set the path to ```clientResourceName``` which is needed to tell the router to resolve down to full auth route.
 
 Use ```PrivateRoute``` for any route that requires authorization. If the user visits a private route while not authenticated, he will be redirected to the login route.
 
