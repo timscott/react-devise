@@ -8,6 +8,13 @@ It turns out it's not very hard to purpose Devise as an authentication backend. 
 
 Enter **React Devise**. The goal of this library is to reduce the friction of adding authentication to a new React/Rails app. We aim to reduce it to the very low level that Rails developers have come to expect while maintaining flexibility to make it your own.
 
+## Reference App
+
+Have a look at a reference implementation.
+
+* [The code](https://github.com/timscott/react-devise-sample)
+* [Demo on Heroku](http://react-devise-sample.herokuapp.com/)
+
 ## Dependencies
 
 React Devise has deep dependencies on some popular React modules. The most significant are:
