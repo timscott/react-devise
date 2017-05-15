@@ -1,12 +1,20 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {getConfig} from './config/index';
 
-const withAuth = WrappedComponent => {
-  const Authorized = props => {
-    const {auth} = getConfig();
-    return <WrappedComponent auth={auth} {...props} />;
+const mapStateToProps = ({currentUser}) => {
+  return {
+    currentUser,
   };
-  return Authorized;
+};
+
+const withAuth = WrappedComponent => {
+  const Authorized = ({currentUser, ...props}) => {
+    const {auth} = getConfig();
+    return <WrappedComponent auth={auth} currentUser={currentUser} {...props} />;
+  };
+
+  return connect(mapStateToProps)(Authorized);
 };
 
 export default withAuth;
