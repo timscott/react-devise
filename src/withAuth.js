@@ -9,7 +9,7 @@ const mapStateToProps = ({currentUser}) => {
 };
 
 const withAuth = WrappedComponent => {
-  const Authorized = ({currentUser}) => {
+  const Authorized = ({currentUser, ...props}) => {
     const {auth} = getConfig();
     return <WrappedComponent auth={auth} currentUser={currentUser} {...props} />;
   };
