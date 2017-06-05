@@ -1,6 +1,8 @@
 import jwtDecode from 'jwt-decode';
 
-const currentUser = (state = null, action) => {
+const initialState = {};
+
+const currentUser = (state = initialState, action) => {
   switch (action.type) {
     case 'LOGGING_IN':
       return {
@@ -13,7 +15,7 @@ const currentUser = (state = null, action) => {
       };
     case 'LOG_OUT':
     case 'LOGIN_FAILED':
-      return null;
+      return initialState;
     default:
       return state;
   }
