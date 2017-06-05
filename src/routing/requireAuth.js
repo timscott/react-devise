@@ -3,14 +3,14 @@ import {Redirect} from 'react-router';
 import {connect} from 'react-redux';
 import {getConfig} from '../config/index';
 
-const requireAuth = WrappedComponent => {
+const requireAuth = (WrappedComponent, props) => {
   return connect(state => {
     return {
       currentUser: state.currentUser
     };
   })(({currentUser, location}) => {
     if (currentUser && currentUser.isLoggedIn) {
-      return <WrappedComponent/>;
+      return <WrappedComponent {...props} />;
     }
     const {clientResourceName, messages: {mustLoginMessage}} = getConfig();
     return <Redirect to={{
