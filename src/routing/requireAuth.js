@@ -9,7 +9,7 @@ const requireAuth = (WrappedComponent, props) => {
       currentUser: state.currentUser
     };
   })(({currentUser, location}) => {
-    if (currentUser && currentUser.isLoggedIn) {
+    if (currentUser.isLoggedIn) {
       return <WrappedComponent {...props} />;
     }
     const {clientResourceName, messages: {mustLoginMessage}} = getConfig();

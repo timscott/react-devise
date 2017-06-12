@@ -14,10 +14,10 @@ const AuthLinkItem = ({component: Component, path, currentPath, children}) => {
 };
 
 const AuthLinks = ({currentUser, match, resourceName, AuthLinksList, AuthLinksListItem}) => {
-  if (currentUser) {
-    if (currentUser.isLoggingIn) {
-      return <div>Logging in...</div>;
-    }
+  if (currentUser.isLoggingIn) {
+    return <div>Logging in...</div>;
+  }
+  if (currentUser.isLoggedIn) {
     return null;
   }
   return (

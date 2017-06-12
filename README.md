@@ -160,7 +160,7 @@ const Home = ({currentUser, auth: {AuthLinks}}) => {
   return (
     <div>
       <div>
-        <h2>Welcome {currentUser && currentUser.email}</h2>
+        <h2>Welcome {currentUser.email}</h2>
         <AuthLinks />
       </div>
     </div>

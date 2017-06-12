@@ -41,10 +41,8 @@ const Login = ({currentUser, doLogin, location: {state: {alert, from: {pathname:
   const submit = data => {
     return doLogin(data);
   };
-  if (currentUser) {
-    if (currentUser.isLoggedIn) {
-      return <Redirect to={returnTo || '/'} />;
-    }
+  if (currentUser.isLoggedIn) {
+    return <Redirect to={returnTo || '/'} />;
   }
   const {auth: {AuthLinks, viewPlugin: {View, Heading, Alert}}} = rest;
   return (
