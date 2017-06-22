@@ -147,6 +147,38 @@ const UnstyledList = styled.ul`
 export default UnstyledList;
 ```
 
+## Customizing Routes
+
+You can customize any of the [defaultRoutes](https://github.com/timscott/react-devise/blob/master/src/config/defaultRoutes.js).
+
+```js
+initReactDevise({
+  // other config
+  routes: {
+    signup: {
+      component: MyFancySignupForm,
+      path: '/signup-for-fun-and-profit',
+      linkText: 'Hey, Signup Now!'
+    }
+  }
+});
+```
+
+Custom routes are deep merged with the defaults, so you only need to specify the properties you want to change. For example, you're happy with the default path and link text for the signup route, but you want to use a custom view component: 
+
+```js
+initReactDevise({
+  // other config
+  routes: {
+    signup: {
+      component: MyFancySignupForm
+    }
+  }
+});
+```
+
+This provides a way to replace the built-in views with completely custom views. Similar to server-rendered Devise, it's probably easiest to copy of the [build-in views](https://github.com/timscott/react-devise/tree/master/src/views) as a starting point.
+
 ## Accessing Configuration in Your Components
 
 You can access React Devise config and also the ```AuthLinks``` component in your components by using ```withAuth``` like so:
