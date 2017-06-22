@@ -1,35 +1,19 @@
 import React from 'react';
 import {Route, Switch} from 'react-router';
 import {getConfig} from '../config/index';
-import {
-  Login,
-  SignUp,
-  Confirm,
-  RequestResetPassword,
-  ResetPassword,
-  RequestReconfirm
-} from '../views';
-
-const views = [
-  {path: '/login', component: Login},
-  {path: '/sign-up', component: SignUp},
-  {path: '/confirmation/new', component: RequestReconfirm},
-  {path: '/confirmation', component: Confirm},
-  {path: '/password/new', component: RequestResetPassword},
-  {path: '/password/edit', component: ResetPassword}
-];
 
 const AuthRoutes = ({wrapper: Wrapper = Route}) => {
-  const {auth} = getConfig();
+  const {auth, routes} = getConfig();
   return (
     <Switch>
-      {views.map(view => {
-        const fullPath = `/${auth.clientResourceName}${view.path}`;
+      {Object.keys(routes).map(routeName => {
+        const route = routes[routeName];
+        const fullPath = `/${auth.clientResourceName}${route.path}`;
         return <Wrapper
           key={fullPath}
           exact
           path={fullPath}
-          component={props => <view.component
+          component={props => <route.component
             auth={auth}
             {...props}
           />}

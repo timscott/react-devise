@@ -1,5 +1,6 @@
 import React from 'react';
 import defaultMessages from './defaultMessages';
+import defaultRoutes from './defaultRoutes';
 import viewPluginPlain from './viewPluginPlain';
 import {AuthLinks} from '../views';
 
@@ -12,7 +13,8 @@ class Config {
     apiHost,
     viewPlugins = [],
     defaultViewPluginSettings = {},
-    messages = {}
+    messages = {},
+    routes = {}
   } = {}) {
     const defaultViewPlugin = viewPluginPlain.plugin(defaultViewPluginSettings);
     this.viewPlugin = Object.assign({}, defaultViewPlugin, ...viewPlugins);
@@ -28,13 +30,18 @@ class Config {
     this.clientResourceName = clientResourceName;
     this.messages = Object.assign({}, defaultMessages, messages);
     this.AuthLinks = AuthLinksComponent;
+    this.routes = Object.keys(defaultRoutes).reduce((result, routeName) => {
+      result[routeName] = Object.assign(defaultRoutes[routeName], routes[routeName] || {});
+      return result;
+    }, {});
   }
   get auth() {
     return {
       viewPlugin: this.viewPlugin,
       clientResourceName: this.clientResourceName,
       messages: this.messages,
-      AuthLinks: this.AuthLinks
+      AuthLinks: this.AuthLinks,
+      views: this.views
     };
   }
 }
@@ -42,9 +49,7 @@ class Config {
 const getConfig = () => instance;
 
 const init = args => {
-  if (!instance) {
-    instance = new Config(args);
-  }
+  instance = new Config(args);
   return getConfig;
 };
 

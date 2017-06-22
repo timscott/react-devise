@@ -1,10 +1,11 @@
 {
   "name": "react-devise",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A react front-end for a ruby on rails devise authentication server.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha --reporter spec",
+    "test": "./node_modules/jest-cli/bin/jest.js /src",
+    "test:debug": "node debug ./node_modules/jest/bin/jest.js /src --runInBand",
     "prepublish": "node_modules/babel-cli/bin/babel.js src --out-dir lib"
   },
   "babel": {
@@ -50,6 +51,11 @@
     "babel-eslint": "^7.2.3",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1"
+    "babel-preset-stage-0": "^6.24.1",
+    "enzyme": "^2.9.0",
+    "enzyme-to-json": "^1.5.1",
+    "jest": "^20.0.4",
+    "react-dom": "^15.6.1",
+    "react-test-renderer": "^15.6.1"
   }
 }

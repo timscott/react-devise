@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {getConfig} from '../config/index';
 import {withRouter, Link} from 'react-router-dom';
 
 const AuthLinkItem = ({component: Component, path, currentPath, children}) => {
@@ -13,43 +14,30 @@ const AuthLinkItem = ({component: Component, path, currentPath, children}) => {
   );
 };
 
-const AuthLinks = ({currentUser, match, resourceName, AuthLinksList, AuthLinksListItem}) => {
+const AuthLinksComponent = ({currentUser, match, resourceName, AuthLinksList, AuthLinksListItem}) => {
   if (currentUser.isLoggingIn) {
     return <div>Logging in...</div>;
   }
   if (currentUser.isLoggedIn) {
     return null;
   }
+  const {routes} = getConfig();
+  const linkableRouteNames = Object.keys(routes).filter(routeName => Boolean(routes[routeName].linkText));
   return (
     <AuthLinksList>
-      <AuthLinkItem
-        path={`/${resourceName}/login`}
-        currentPath={match.path}
-        component={AuthLinksListItem}
-      >
-        Log In
-      </AuthLinkItem>
-      <AuthLinkItem
-        path={`/${resourceName}/sign-up`}
-        currentPath={match.path}
-        component={AuthLinksListItem}
-      >
-        Sign Up
-      </AuthLinkItem>
-      <AuthLinkItem
-        path={`/${resourceName}/password/new`}
-        currentPath={match.path}
-        component={AuthLinksListItem}
-      >
-        Reset Your Password
-      </AuthLinkItem>
-      <AuthLinkItem
-        path={`/${resourceName}/confirmation/new`}
-        currentPath={match.path}
-        component={AuthLinksListItem}
-      >
-        Resend Confirmation Instructions
-      </AuthLinkItem>
+      {linkableRouteNames.map(routeName => {
+        const path = `/${resourceName}${routes[routeName].path}`;
+        return (
+          <AuthLinkItem
+            key={path}
+            path={path}
+            currentPath={match.path}
+            component={AuthLinksListItem}
+          >
+            {routes[routeName].linkText}
+          </AuthLinkItem>
+        );
+      })}
     </AuthLinksList>
   );
 };
@@ -60,4 +48,9 @@ const mapStateToProps = state => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(AuthLinks));
+const AuthLinks = withRouter(connect(mapStateToProps)(AuthLinksComponent));
+
+export {
+  AuthLinks as default,
+  AuthLinksComponent
+};

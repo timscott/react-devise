@@ -30,6 +30,10 @@
     "navigator": true,
     "window": true,
     "fetch": true,
-    "localStorage": true
+    "localStorage": true,
+    "describe": true,
+    "it": true,
+    "expect": true,
+    "beforeEach": true
   }
 }
