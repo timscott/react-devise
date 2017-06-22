@@ -177,7 +177,7 @@ initReactDevise({
 });
 ```
 
-This provides a way to replace the built-in views with completely custom views. Similar to server-rendered Devise, it's probably easiest to copy of the [build-in views](https://github.com/timscott/react-devise/tree/master/src/views) as a starting point.
+This provides a way to replace the built-in views with completely custom views. Similar to server-rendered Devise, it's probably easiest to start with a copy of the [build-in views](https://github.com/timscott/react-devise/tree/master/src/views).
 
 ## Accessing Configuration in Your Components
 
