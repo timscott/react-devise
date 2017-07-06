@@ -75,13 +75,13 @@ const App = () => {
 
 ### Private Route
 
-Use ```PrivateRoute``` for any route that requires authorization. If the user visits a private route while not authenticated, he will be redirected to the login route.
+Use ```PrivateRoute``` for any route that requires authorization. If the user visits a private route while not authorized, he will be redirected to the login route.
 
 By default ```PrivateRoute``` uses ```currentUser.isLoggedIn``` to decide if the user is authorized. You can override this with the ```authorize``` prop:
 
 ```js
 <PrivateRoute exact
-  path="/products"
+  path="/admin"
   component={Admin}
   authorize={currentUser => currentUser.isAdmin}
 />
