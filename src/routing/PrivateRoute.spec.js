@@ -1,14 +1,18 @@
 import React from 'react';
 import {mount} from 'enzyme';
-import {Switch, MemoryRouter} from 'react-router';
+import {Switch, Route, MemoryRouter} from 'react-router';
 import configureMockStore from 'redux-mock-store';
 import {Provider} from 'react-redux';
 import AuthRoutes from './AuthRoutes';
 import PrivateRoute from './PrivateRoute';
 import {initReactDevise} from '../config';
 
-const MyComponent = () => {
-  return <div className="my-component" />;
+const Private = () => {
+  return <div className="my-private-component" />;
+};
+
+const Unauthorized = () => {
+  return <div className="unauthorized" />;
 };
 
 const createMockStore = configureMockStore();
@@ -19,21 +23,25 @@ const App = ({store, authorize}) => (
   <Provider store={store}>
     <MemoryRouter initialIndex={0} initialEntries={['/']}>
       <Switch>
-        <PrivateRoute exact path="/" component={MyComponent} authorize={authorize} />
+        <PrivateRoute exact path="/" component={Private} authorize={authorize} />
+        <Route exact path="/unauthorized" component={Unauthorized} />
         <AuthRoutes />
       </Switch>
     </MemoryRouter>
   </Provider>
 );
 
-const expectAuthorized = component => {
-  expect(component.find('div.my-component')).toHaveLength(1);
+const expectPrivate = component => {
+  expect(component.find('div.my-private-component')).toHaveLength(1);
+};
+
+const expectLogin = component => {
+  expect(component.find('.auth-form')).toHaveLength(1);
+  expect(component.find('h1').text()).toBe('Login');
 };
 
 const expectUnauthorized = component => {
-  expect(component.find('div.my-component')).toHaveLength(0);
-  expect(component.find('.auth-form')).toHaveLength(1);
-  expect(component.find('h1').text()).toBe('Login');
+  expect(component.find('div.unauthorized')).toHaveLength(1);
 };
 
 beforeAll(() => {
@@ -48,26 +56,28 @@ describe('PrivateRoute', () => {
       }
     });
     component = mount(<App store={store} />);
-    expectAuthorized(component);
+    expectPrivate(component);
   });
-  it('should NOT render the route when current user is NOT logged in', () => {
+  it('should redirect to login when current user is NOT logged in', () => {
     store = createMockStore({
       currentUser: {
         isLoggedIn: false
       }
     });
     component = mount(<App store={store} />);
-    expectUnauthorized(component);
+    expectLogin(component);
   });
-  it.only('should render the route when passes custom authorize', () => {
+  it('should render the route when passes custom authorize', () => {
     store = createMockStore({
       currentUser: {
         isLoggedIn: false
       }
     });
-    const customAuthorize = currentUser => true;
+    const customAuthorize = currentUser => ({
+      authorized: true
+    });
     component = mount(<App store={store} authorize={customAuthorize}/>);
-    expectAuthorized(component);
+    expectPrivate(component);
   });
   it('should NOT render the route when fails custom authorize', () => {
     store = createMockStore({
@@ -75,7 +85,12 @@ describe('PrivateRoute', () => {
         isLoggedIn: true
       }
     });
-    const customAuthorize = currentUser => false;
+    const customAuthorize = currentUser => ({
+      authorized: false,
+      redirectTo: {
+        pathname: '/unauthorized'
+      }
+    });
     component = mount(<App store={store} authorize={customAuthorize}/>);
     expectUnauthorized(component);
   });

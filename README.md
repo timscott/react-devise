@@ -33,13 +33,13 @@ yarn add react-devise
 
 ## Basic Usage
 
-Call ```initReactDevise``` as early as possible in your application, and before using any other part of React Devise. This function returns a function which returns the config object.
+Call `initReactDevise` as early as possible in your application, and before using any other part of React Devise. This function returns a function which returns the config object.
 
-Add ```reactDeviseReducers``` to your store.
+Add `reactDeviseReducers` to your store.
 
-Within the ```Router``` element place ```AuthRoutes```. Set the path to ```clientResourceName``` to cause the router to select among the full auth routes.
+Within the `Router` element place `AuthRoutes`. Set the path to `clientResourceName` to cause the router to select among the full auth routes.
 
-```javascript
+```js
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import {Router, Route, Switch} from 'react-router-dom';
@@ -73,27 +73,34 @@ const App = () => {
 }
 ```
 
-### Private Route
+### PrivateRoute
 
-Use ```PrivateRoute``` for any route that requires authorization. If the user visits a private route while not authorized, he will be redirected to the login route.
+Use `PrivateRoute` for any route that requires authorization. If the user visits a private route while not authorized, he will be redirected to the login route.
 
-By default ```PrivateRoute``` uses ```currentUser.isLoggedIn``` to decide if the user is authorized. You can override this with the ```authorize``` prop:
+By default `PrivateRoute` uses `currentUser.isLoggedIn` to decide if the user is authorized. You can override this with the `authorize` prop, a function that returns an object in the form `{authorized, redirectTo}`.
 
 ```js
 <PrivateRoute exact
   path="/admin"
   component={Admin}
-  authorize={currentUser => currentUser.isAdmin}
+  authorize={currentUser => {{
+    authorized: currentUser.isAdmin,
+    redirectTo: {
+      path: '/unauthorized'
+    }
+  }}
 />
 ```
 
-> **PLEASE NOTE**: _```PrivateRoute``` does **not** protect your server. It only prevents routing to client components. It would be very easy for a user to circumvent. Your server must handle authorization of any calls that originate from private routes or anywhere in your client application._
+`redirectTo` defaults to the login route. However, keep in mind that the login component redirects to the referrer when `currentUser.isLoggedIn` equals `true`. This can ___cause a redirect loop___. So normally you should provide a custom unauthorized route.
+
+> **ATTENTION**: _`PrivateRoute` does **not** protect your server. It only prevents routing to client components. It would be very easy for a user to circumvent. Your server must handle authorization of any calls that originate from private routes or anywhere in your client application._
 
 ## Customization
 
-To customize the appearance and behavior of React Devise, pass a settings object into ```initReactDevise```.
+To customize the appearance and behavior of React Devise, pass a settings object into `initReactDevise`.
 
-```javascript
+```js
 import ReactDeviseMaterialUI from 'react-devise-material-ui';
 import {Form, Alert, UnstyledList, UnstyledListItem, FormError, AuthHeading, AuthViewContainer} from '../components';
 
@@ -126,16 +133,16 @@ initReactDevise({
 | `clientResourceName`        | "users"       | The first node in the route to each auth view. |
 | `apiResourceName`           | "auth"        | The resource name used by Devise on the server. The first node in the path of API calls. |
 | `apiHost`                   | `undefined`   | Omit unless your devise API is host on a different domain than the website. |
-| `viewPlugins`               | []            | Use one or more view plugins to inject custom components into React Devise views.<br><br>View plugins are merged in order *after* the default plugin. Taking the code sample above, ```myCustomPlugin``` supersede ```ReactDeviseMaterialUI``` plugin, which in turn supersede the default plugin. |
+| `viewPlugins`               | []            | Use one or more view plugins to inject custom components into React Devise views.<br><br>View plugins are merged in order *after* the default plugin. Taking the code sample above, `myCustomPlugin supersede `ReactDeviseMaterialUI` plugin, which in turn supersede the default plugin. |
 | `defaultViewPluginSettings` | {}            | To customize the default plugin, provide a settings object. This can be used in conjunction with custom plugins or without them.<br><br>To see the available settings, find the default plugin [here]( https://github.com/timscott/react-devise/blob/master/src/config/viewPluginPlain.js). |
 | `messages`                  | {}            | Override the default messages used by React Devise. Default messages are [here](https://github.com/timscott/react-devise/blob/master/src/config/defaultMessages.js). |
 
 
 ### Styled Components
 
-React Devise plays nicely with [styled-components](https://github.com/styled-components/styled-components). For example, ```UnstlyedList``` (in the prior code sample) might be:
+React Devise plays nicely with [styled-components](https://github.com/styled-components/styled-components). For example, `UnstlyedList` (in the prior code sample) might be:
 
-```javascript
+```js
 import styled from 'styled-components';
 
 const UnstyledList = styled.ul`
@@ -154,7 +161,7 @@ export default UnstyledList;
 
 ## Customizing Routes
 
-Given that the default value of ```clientResourceName``` is "users", the [default auth routes]((https://github.com/timscott/react-devise/blob/master/src/config/defaultRoutes.js) are:
+Given that the default value of `clientResourceName` is "users", the [default auth routes]((https://github.com/timscott/react-devise/blob/master/src/config/defaultRoutes.js) are:
 
 * /users/login
 * /users/sign-up/
@@ -195,9 +202,9 @@ This provides a way to replace the built-in views with completely custom views. 
 
 ## Accessing Configuration in Your Components
 
-You can access React Devise config and also the ```AuthLinks``` component in your components by using ```withAuth``` like so:
+You can access React Devise config and also the `AuthLinks` component in your components by using `withAuth` like so:
 
-```javascript
+```js
 import React from 'react';
 import {connect} from 'react-redux';
 import {withAuth} from 'react-devise';
@@ -226,7 +233,7 @@ export default connect(mapStateToProps)(withAuth(Home));
 
 Clients like [Apollo](https://github.com/apollographql/apollo) handle data access for you. React Devise provides middleware to add authentication to all requests. For example:
 
-```javascript
+```js
 import ApolloClient, {createNetworkInterface} from 'apollo-client';
 import {addAuthorizationHeaderToRequest} from 'react-devise';
 
@@ -239,7 +246,7 @@ networkInterface.use([{
 }]);
 ```
 
-```addAuthorizationHeaderToRequest``` takes a ```request``` and an optional ```next``` callback.
+`addAuthorizationHeaderToRequest` takes a `request` and an optional `next` callback.
 
 ## Devise Server Setup
 
@@ -253,7 +260,7 @@ First, we'll use the [devise-jwt](https://github.com/waiting-for-dev/devise-jwt)
  gem 'devise-jwt'
 ```
 
-Add the ```devise-jwt``` bits in the user model (or whatever your authenticated resource is).
+Add the `devise-jwt` bits in the user model (or whatever your authenticated resource is).
 
 ```ruby
 # /app/models/user.rb
@@ -274,7 +281,7 @@ class User < ApplicationRecord
 end
 ```
 
-Next, we might need to set a custom path in our routes to match the ```apiResourceName``` if it's not the same as your user model name.
+Next, we might need to set a custom path in our routes to match the `apiResourceName` if it's not the same as your user model name.
 
 ```ruby
 # routes.rb
@@ -298,7 +305,7 @@ class CustomAuthFailure < Devise::FailureApp
 end
 ```
 
-Next, we need to change the URLs in our emails to be the *client side* routes. (NOTE: Replace "user" and "users" if you set a different ```clientResourceName```.)
+Next, we need to change the URLs in our emails to be the *client side* routes. (NOTE: Replace "user" and "users" if you set a different `clientResourceName`.)
 
 ```ruby
 # /app/helpers/users_mailer_helper.rb
@@ -356,7 +363,6 @@ end
 config.mailer = 'UsersMailer'
 
 config.navigational_formats = [:json]
-
 ```
 
 ## To Do

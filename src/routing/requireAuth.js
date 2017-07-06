@@ -5,18 +5,21 @@ import {getConfig} from '../config/index';
 
 const requireAuth = (WrappedComponent, {authorize, ...props}) => {
   let Authorizer = ({currentUser, location}) => {
-    const authorized = authorize ? authorize(currentUser) : currentUser.isLoggedIn;
+    const {authorized, redirectTo} = authorize ? authorize(currentUser) : {
+      authorized: currentUser.isLoggedIn
+    };
     if (authorized) {
       return <WrappedComponent {...props} />;
     }
     const {clientResourceName, routes: {login}, messages: {mustLoginMessage}} = getConfig();
-    return <Redirect to={{
+    const to = redirectTo || {
       pathname: `/${clientResourceName}${login.path}`,
       state: {
         alert: mustLoginMessage,
         from: location
-      }}}
-    />;
+      }
+    };
+    return <Redirect to={to}/>;
   };
   Authorizer = withRouter(Authorizer);
   const mapStateToProps = state => {
