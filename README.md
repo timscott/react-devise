@@ -87,6 +87,8 @@ By default ```PrivateRoute``` uses ```currentUser.isLoggedIn``` to decide if the
 />
 ```
 
+> **PLEASE NOTE**: _```PrivateRoute``` does **not** protect your server. It only prevents routing to client components. It would be very easy for a user to circumvent. Your server must handle authorization of any calls that originate from private routes or anywhere in your client application._
+
 ## Customization
 
 To customize the appearance and behavior of React Devise, pass a settings object into ```initReactDevise```.
