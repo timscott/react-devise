@@ -39,8 +39,6 @@ Add ```reactDeviseReducers``` to your store.
 
 Within the ```Router``` element place ```AuthRoutes```. Set the path to ```clientResourceName``` to cause the router to select among the full auth routes.
 
-Use ```PrivateRoute``` for any route that requires authorization. If the user visits a private route while not authenticated, he will be redirected to the login route.
-
 ```javascript
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
@@ -75,14 +73,19 @@ const App = () => {
 }
 ```
 
-Given that the default value of ```clientResourceName``` is "users" the default auth routes are:
+### Private Route
 
-* /users/login
-* /users/sign-up/
-* /users/confirmation/new
-* /users/confirmation
-* /users/password/new
-* /users/password/edit
+Use ```PrivateRoute``` for any route that requires authorization. If the user visits a private route while not authenticated, he will be redirected to the login route.
+
+By default ```PrivateRoute``` uses ```currentUser.isLoggedIn``` to decide if the user is authorized. You can override this with the ```authorize``` prop:
+
+```js
+<PrivateRoute exact
+  path="/products"
+  component={Admin}
+  authorize={currentUser => currentUser.isAdmin}
+/>
+```
 
 ## Customization
 
@@ -149,7 +152,16 @@ export default UnstyledList;
 
 ## Customizing Routes
 
-You can customize any of the [defaultRoutes](https://github.com/timscott/react-devise/blob/master/src/config/defaultRoutes.js).
+Given that the default value of ```clientResourceName``` is "users", the [default auth routes]((https://github.com/timscott/react-devise/blob/master/src/config/defaultRoutes.js) are:
+
+* /users/login
+* /users/sign-up/
+* /users/confirmation/new
+* /users/confirmation
+* /users/password/new
+* /users/password/edit
+
+You can customize the auth routes:
 
 ```js
 initReactDevise({
@@ -164,7 +176,7 @@ initReactDevise({
 });
 ```
 
-Custom routes are deep merged with the defaults, so you only need to specify the properties you want to change. For example, you're happy with the default path and link text for the signup route, but you want to use a custom view component: 
+Custom routes are deep merged with the defaults, so you only need to specify the properties you want to change. For example, you're happy with the default path and link text for the signup route, but you want to use a custom view component:
 
 ```js
 initReactDevise({
