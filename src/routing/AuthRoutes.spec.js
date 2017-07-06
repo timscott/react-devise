@@ -32,7 +32,7 @@ describe('<AuthRoutes />', () => {
     const tree = shallowToJson(component);
     expect(tree.children.some(n => n.props.path === '/users/foo')).toBeTruthy();
 
-    // TODO: This does not test that custom view componentn is being used.
+    // TODO: This does not test that custom view component is being used.
     // expect(component.find('div.my-login')).toHaveLength(1);
   });
 });
