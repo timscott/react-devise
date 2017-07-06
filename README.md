@@ -86,13 +86,13 @@ By default `PrivateRoute` uses `currentUser.isLoggedIn` to decide if the user is
   authorize={currentUser => {{
     authorized: currentUser.isAdmin,
     redirectTo: {
-      path: '/unauthorized'
+      pathname: '/unauthorized'
     }
   }}
 />
 ```
 
-`redirectTo` defaults to the login route. However, keep in mind that the login component redirects to the referrer when `currentUser.isLoggedIn` equals `true`. This can ___cause a redirect loop___. So normally you should provide a custom unauthorized route.
+`redirectTo` is a react-router [location](https://reacttraining.com/react-router/web/api/Redirect) which defaults to the login route. However, keep in mind that the login component redirects to the referrer when `currentUser.isLoggedIn` equals `true`. This can ___cause a redirect loop___. So normally you should provide a custom unauthorized route.
 
 > **ATTENTION**: _`PrivateRoute` does **not** protect your server. It only prevents routing to client components. It would be very easy for a user to circumvent. Your server must handle authorization of any calls that originate from private routes or anywhere in your client application._
 
