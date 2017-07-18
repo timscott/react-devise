@@ -161,7 +161,7 @@ export default UnstyledList;
 
 ## Customizing Routes
 
-Given that the default value of `clientResourceName` is "users", the [default auth routes]((https://github.com/timscott/react-devise/blob/master/src/config/defaultRoutes.js) are:
+Given that the default value of `clientResourceName` is "users", the [default auth routes](https://github.com/timscott/react-devise/blob/master/src/config/defaultRoutes.js) are:
 
 * /users/login
 * /users/sign-up/
@@ -185,7 +185,7 @@ initReactDevise({
 });
 ```
 
-Custom routes are deep merged with the defaults, so you only need to specify the properties you want to change. For example, you're happy with the default path and link text for the signup route, but you want to use a custom view component:
+Custom routes are deep merged with the defaults, so you only need to specify the properties you want to change. Say for example you're happy with the default path and link text for the signup route, but you want to use a custom view component:
 
 ```js
 initReactDevise({
@@ -198,7 +198,7 @@ initReactDevise({
 });
 ```
 
-This provides a way to replace the built-in views with completely custom views. Similar to server-rendered Devise, it's probably easiest to start with a copy of the [build-in views](https://github.com/timscott/react-devise/tree/master/src/views).
+This provides a way to replace the built-in views with completely custom views. Similar to server-rendered Devise, it's probably easiest to start with a copy of the [built-in views](https://github.com/timscott/react-devise/tree/master/src/views).
 
 ## Accessing Configuration in Your Components
 
@@ -250,7 +250,9 @@ networkInterface.use([{
 
 ## Devise Server Setup
 
-Eventually we want to create a gem to avoid repeating this boilerplate. For now, you have to set it up yourself.
+Eventually we want to create a gem to avoid repeating a lot of boilerplate. For now, you have to set it up yourself.
+
+### JWT Authentication
 
 First, we'll use the [devise-jwt](https://github.com/waiting-for-dev/devise-jwt) gem.
 
@@ -281,6 +283,8 @@ class User < ApplicationRecord
 end
 ```
 
+### Devise Routes
+
 Next, we might need to set a custom path in our routes to match the `apiResourceName` if it's not the same as your user model name.
 
 ```ruby
@@ -288,6 +292,8 @@ Next, we might need to set a custom path in our routes to match the `apiResource
 
 devise_for :users, path: :auth
 ```
+
+### Devise Failure App
 
 Next, we need to change auth failure behavior:
 
@@ -304,6 +310,8 @@ class CustomAuthFailure < Devise::FailureApp
 
 end
 ```
+
+### Devise Emails
 
 Next, we need to change the URLs in our emails to be the *client side* routes. (NOTE: Replace "user" and "users" if you set a different `clientResourceName`.)
 
@@ -350,8 +358,9 @@ Next, you need to edit your mailers to use the client side route helpers. For ex
 <p><%= link_to 'Confirm my account', user_confirmation_url(confirmation_token: @token) %></p>
 ```
 
-Finally, apply some settings in your devise initializer:
+### Devise Config
 
+Finally, apply some settings in your devise initializer:
 
 ```ruby
 # in your devise initializer
