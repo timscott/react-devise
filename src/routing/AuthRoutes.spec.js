@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {shallowToJson} from 'enzyme-to-json';
-import AuthRoutes from './AuthRoutes';
+import authRoutes, {AuthRoutesComponent} from './authRoutes';
 import {initReactDevise} from '../config';
 import {Route, Switch} from 'react-router';
 
@@ -9,13 +9,24 @@ const MyLogin = () => {
   return <div className="my-login" />;
 };
 
-describe('<AuthRoutes />', () => {
+describe('authRoutes', () => {
+  const auth = {clientResourceName: 'users'};
+  it('should return a route to users', () => {
+    initReactDevise(auth);
+    const component = shallow(<div>{authRoutes()}</div>);
+    const routes = component.find(Route);
+    expect(routes).toHaveLength(1);
+    expect(routes.prop('path')).toEqual(`/${auth.clientResourceName}`);
+  });
+});
+
+describe('<AuthRoutesComponent />', () => {
   const auth = {clientResourceName: 'users'};
   it('should render 6 routes', () => {
     initReactDevise(auth);
-    const component = shallow(<AuthRoutes />);
+    const component = shallow(<AuthRoutesComponent />);
     expect(component.find(Switch)).toHaveLength(1);
-    expect(component.find(Route)).toHaveLength(6);
+    expect(component.find(Route)).toHaveLength(7);
   });
   it('should render with custom views', () => {
     initReactDevise({
@@ -27,8 +38,8 @@ describe('<AuthRoutes />', () => {
         }
       }
     });
-    const component = shallow(<AuthRoutes />);
-    expect(component.find(Route)).toHaveLength(6);
+    const component = shallow(<AuthRoutesComponent />);
+    expect(component.find(Route)).toHaveLength(7);
     const tree = shallowToJson(component);
     expect(tree.children.some(n => n.props.path === '/users/foo')).toBeTruthy();
 

@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import {Switch, Route, MemoryRouter} from 'react-router';
 import configureMockStore from 'redux-mock-store';
 import {Provider} from 'react-redux';
-import AuthRoutes from './AuthRoutes';
+import authRoutes from './authRoutes';
 import PrivateRoute from './PrivateRoute';
 import {initReactDevise} from '../config';
 
@@ -25,7 +25,7 @@ const App = ({store, authorize}) => (
       <Switch>
         <PrivateRoute exact path="/" component={Private} authorize={authorize} />
         <Route exact path="/unauthorized" component={Unauthorized} />
-        <AuthRoutes />
+        {authRoutes()}
       </Switch>
     </MemoryRouter>
   </Provider>

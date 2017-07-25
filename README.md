@@ -33,11 +33,16 @@ yarn add react-devise
 
 ## Basic Usage
 
-Call `initReactDevise` as early as possible in your application, and before using any other part of React Devise. This function returns a function which returns the config object.
+1. Call `initReactDevise` as early as possible in your application, and before using any other part of React Devise. This function returns a function which returns the config object.
 
-Add `reactDeviseReducers` to your store.
+2. Add `reactDeviseReducers` to your store.
 
-Within the `Router` element place `AuthRoutes`. Set the path to `clientResourceName` to cause the router to select among the full auth routes.
+3. Within the `Router` element call `authRoutes`. `authRoutes` takes two arguments:
+
+| Arg         | Default                      | Description                                                                                                                      |
+|-------------|------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `wrapper`   | `Route`                      | Useful when you have a higher order component that wraps routes with a layout, for example.                                      |
+| `notFound`  | `() => <div>Not Found</div>` | The component to render when the route matches the top level route (e.g., `/users`) but does not match any nested route. |
 
 ```js
 import {createStore, combineReducers} from 'redux';
@@ -45,7 +50,7 @@ import {Provider} from 'react-redux';
 import {Router, Route, Switch} from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import reducers from './reducers'
-import {initReactDevise, AuthRoutes, PrivateRoute} from 'react-devise';
+import {initReactDevise, authRoutes, PrivateRoute} from 'react-devise';
 import reactDeviseReducers from 'react-devise/lib/reducers';
 
 const {clientResourceName} = initReactDevise()();
@@ -64,7 +69,7 @@ const App = () => {
         <Switch>
           <PrivateRoute exact path="/products" component={Products} />
           <Route exact path="/" component={Home} />
-          <AuthRoutes path={`/${clientResourceName}`} />
+          {authRoutes({notFoundComponent: NotFound})}
           <Route component={NotFound} />
         </Switch>
       </Router>
