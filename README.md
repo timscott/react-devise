@@ -368,7 +368,7 @@ Next, you need to edit your mailers to use the client side route helpers. For ex
 Finally, apply some settings in your devise initializer:
 
 ```ruby
-# in your devise initializer
+# config/initializers/devise.rb
 
 config.warden do |manager|
   manager.failure_app = CustomAuthFailure
@@ -376,7 +376,8 @@ end
 
 config.mailer = 'UsersMailer'
 
-config.navigational_formats = [:json]
+# Needs to not include :json or wildcards that includes json.
+config.navigational_formats = [:html]
 ```
 
 ## To Do
