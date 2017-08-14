@@ -376,7 +376,7 @@ end
 
 config.mailer = 'UsersMailer'
 
-# Needs to not include :json or wildcards that includes json.
+# Needs to not include :json or wildcards that match json.
 config.navigational_formats = [:html]
 ```
 
