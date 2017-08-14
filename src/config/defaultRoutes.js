@@ -4,7 +4,8 @@ import {
   Confirm,
   RequestResetPassword,
   ResetPassword,
-  RequestReconfirm
+  RequestReconfirm,
+  User
 } from '../views';
 
 export default {
@@ -35,5 +36,10 @@ export default {
   resetPassword: {
     path: '/password/edit',
     component: ResetPassword
+  },
+  editUser: {
+    path: null,
+    component: User,
+    requireAuth: true
   }
 };

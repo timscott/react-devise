@@ -2,10 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
 import {requestReconfirm, formAction} from '../actions';
+import {required, email} from './validation';
 
 const RequestReconfirmForm = reduxForm({
   form: 'requestReconfirmPassword'
-})(({handleSubmit, submitting, submitSucceeded, error, onSubmit, auth: {messages, viewPlugin: {renderInput, SubmitButton, FormError, Form}}}) => {
+})(({handleSubmit, valid, submitting, submitSucceeded, error, onSubmit, auth: {messages, viewPlugin: {renderInput, SubmitButton, FormError, Form}}}) => {
   if (submitSucceeded) {
     return <p>{messages.reqeustReconfirmSucceeded}</p>;
   }
@@ -15,12 +16,13 @@ const RequestReconfirmForm = reduxForm({
         name="email"
         label="Email"
         component={renderInput}
+        validate={[required, email]}
       />
       <SubmitButton
         label={submitting ? 'Resending Confirmation Instructions...' : 'Resend Confirmation Instructions'}
-        disabled={submitting}
+        disabled={!valid || submitting}
       />
-    {error && <FormError>{error}</FormError>}
+      {error && <FormError>{error}</FormError>}
     </Form>
   );
 });

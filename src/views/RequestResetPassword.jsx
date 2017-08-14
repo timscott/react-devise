@@ -2,10 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
 import {requestResetPassword, formAction} from '../actions';
+import {required, email} from './validation';
 
 const RequestResetPasswordForm = reduxForm({
   form: 'requestResetPassword'
-})(({handleSubmit, submitting, submitSucceeded, error, onSubmit, auth: {messages, viewPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
+})(({handleSubmit, valid, submitting, submitSucceeded, error, onSubmit, auth: {messages, viewPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
   if (submitSucceeded) {
     return <p>
       {messages.requestResetPasswordSucceeded}
@@ -17,10 +18,11 @@ const RequestResetPasswordForm = reduxForm({
         name="email"
         label="Email"
         component={renderInput}
+        validate={[required, email]}
       />
       <SubmitButton
         label={submitting ? 'Requesting Password Reset...' : 'Request Password Reset'}
-        disabled={submitting}
+        disabled={!valid || submitting}
       />
       {error && <FormError>{error}</FormError>}
     </Form>

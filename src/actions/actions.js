@@ -24,11 +24,15 @@ const ROUTES = {
     method: 'PATCH',
     path: 'password'
   },
-  updateUser: {
+  editRegistration: {
+    method: 'GET',
+    path: 'edit'
+  },
+  updateRegistration: {
     method: 'PATCH',
     path: null
   },
-  destroyUser: {
+  destroyRegistration: {
     method: 'DELETE',
     path: null
   },
@@ -66,19 +70,19 @@ const tryLogin = (response, dispatch) => {
   const auth = response.headers.get('Authorization');
   if (auth) {
     const [_, authToken] = auth.split(' '); // eslint-disable-line no-unused-vars
-    setAuthToken(authToken);
-    dispatch({
-      type: 'LOGGED_IN',
-      payload: authToken
-    });
+    if (authToken) {
+      setAuthToken(authToken);
+      dispatch({
+        type: 'LOGGED_IN',
+        payload: authToken
+      });
+    }
   }
   return response;
 };
 
 const signUp = (data, dispatch) => {
-  return fetch(ROUTES.signUp, {
-    user: data
-  }).then(ensureValid).then(response => {
+  return fetchWithUserForm(ROUTES.signUp, data).then(response => {
     return tryLogin(response, dispatch);
   });
 };
@@ -87,9 +91,7 @@ const login = (data, dispatch) => {
   dispatch({
     type: 'LOGGING_IN'
   });
-  return fetch(ROUTES.login, {
-    user: data
-  }).then(response => {
+  return fetchWithUserForm(ROUTES.login, data).then(response => {
     if (response.status === 401) {
       dispatch({
         type: 'LOGIN_FAILED'
@@ -112,10 +114,30 @@ const requestResetPassword = data => fetchWithUserForm(ROUTES.resetPassword, dat
 
 const resetPassword = data => fetchWithUserForm(ROUTES.changePassword, data);
 
+const editUser = () => fetch(ROUTES.editRegistration);
+
+const updateUser = (data, dispatch) => {
+  return fetchWithUserForm(ROUTES.updateRegistration, data).then(response => {
+    if (response.status === 401) {
+      throw new UnauthorizedError();
+    }
+    return tryLogin(response, dispatch);
+  });
+};
+
 const logout = dispatch => {
   removeAuthToken();
   dispatch({
     type: 'LOG_OUT'
+  });
+};
+
+const destroyUser = (data, dispatch) => {
+  return fetchWithUserForm(ROUTES.destroyRegistration, data).then(response => {
+    if (response.status === 401) {
+      throw new UnauthorizedError();
+    }
+    return logout(dispatch);
   });
 };
 
@@ -126,5 +148,8 @@ export {
   confirm,
   requestReconfirm,
   requestResetPassword,
-  resetPassword
+  resetPassword,
+  updateUser,
+  editUser,
+  destroyUser
 };

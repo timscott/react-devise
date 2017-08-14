@@ -1,6 +1,6 @@
 {
   "name": "react-devise",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "A react front-end for a ruby on rails devise authentication server.",
   "main": "lib/index.js",
   "scripts": {

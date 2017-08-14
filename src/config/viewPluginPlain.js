@@ -7,7 +7,15 @@ const plugin = ({
   formErrorProps = {
     className: 'auth-error',
     style: {
+      marginTop: '5px',
       color: 'red'
+    }
+  },
+  formSuccessProps = {
+    className: 'auth-success',
+    style: {
+      marginTop: '5px',
+      color: 'green'
     }
   },
   fieldErrorProps = {
@@ -57,6 +65,9 @@ const plugin = ({
   const Form = ({onSubmit, children}) => {
     return <form onSubmit={onSubmit} {...formProps}>{children}</form>;
   };
+  const FormSuccess = ({children}) => {
+    return <div {...formSuccessProps}>{children}</div>;
+  };
   const Alert = ({children}) => {
     return <div {...alertProps}>{children}</div>;
   };
@@ -79,6 +90,7 @@ const plugin = ({
     renderInput,
     SubmitButton,
     Form,
+    FormSuccess,
     Alert,
     FormError,
     AuthLinksList,

@@ -3,7 +3,7 @@ import {Redirect, withRouter} from 'react-router';
 import {connect} from 'react-redux';
 import {getConfig} from '../config/index';
 
-const requireAuth = (WrappedComponent, {authorize, ...props}) => {
+const requireAuth = (WrappedComponent, {authorize, ...props} = {}) => {
   let Authorizer = ({currentUser, location}) => {
     const {authorized, redirectTo} = authorize ? authorize(currentUser) : {
       authorized: currentUser.isLoggedIn

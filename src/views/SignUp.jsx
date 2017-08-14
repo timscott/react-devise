@@ -3,10 +3,11 @@ import {connect} from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
 import {Redirect} from 'react-router-dom';
 import {signUp, formAction} from '../actions';
+import {required, email} from './validation';
 
 const SignUpForm = reduxForm({
   form: 'signUp'
-})(({error, submitting, submitSucceeded, handleSubmit, onSubmit, auth: {messages: {signUpSucceeded: signUpSucceededMessage}, viewPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
+})(({error, valid, submitting, submitSucceeded, handleSubmit, onSubmit, auth: {messages: {signUpSucceeded: signUpSucceededMessage}, viewPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
   if (submitSucceeded) {
     return <Redirect to={{
       pathname: '/',
@@ -21,22 +22,25 @@ const SignUpForm = reduxForm({
         name="email"
         component={renderInput}
         label="Email"
+        validate={[required, email]}
       />
       <Field
         name="password"
         type="password"
         component={renderInput}
         label="Password"
+        validate={required}
       />
       <Field
         name="password_confirmation"
         type="password"
         component={renderInput}
         label="Password Again"
+        validate={required}
       />
       <SubmitButton
         label={submitting ? 'Signing Up...' : 'Sign Up'}
-        disabled={submitting}
+        disabled={!valid || submitting}
       />
       {error && <FormError>{error}</FormError>}
     </Form>

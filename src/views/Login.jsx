@@ -4,10 +4,11 @@ import {login} from '../actions';
 import {UnauthorizedError} from '../errors';
 import {Redirect} from 'react-router-dom';
 import {reduxForm, Field, SubmissionError} from 'redux-form';
+import {required, email} from './validation';
 
 const LoginForm = reduxForm({
   form: 'login'
-})(({handleSubmit, submitting, error, onSubmit, auth: {messages, viewPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
+})(({handleSubmit, valid, submitting, error, onSubmit, auth: {messages, viewPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
   const submit = data => {
     return onSubmit(data).catch(UnauthorizedError, () => {
       throw new SubmissionError({
@@ -21,6 +22,7 @@ const LoginForm = reduxForm({
         name="email"
         component={renderInput}
         label="Email"
+        validate={[required, email]}
       />
       <Field
         name="password"
@@ -30,7 +32,7 @@ const LoginForm = reduxForm({
       />
       <SubmitButton
         label={submitting ? 'Logging In...' : 'Log In'}
-        disabled={submitting}
+        disabled={!valid || submitting}
       />
       {error && <FormError>{error}</FormError>}
     </Form>

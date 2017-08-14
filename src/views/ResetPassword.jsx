@@ -4,10 +4,11 @@ import {reduxForm, Field} from 'redux-form';
 import {Redirect} from 'react-router-dom';
 import url from 'url';
 import {resetPassword, formAction} from '../actions';
+import {required} from './validation';
 
 const ResetPasswordForm = reduxForm({
   form: 'requestResetPassword'
-})(({handleSubmit, submitting, error, onSubmit, query, submitSucceeded, auth: {resourceName, messages, viewPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
+})(({handleSubmit, valid, submitting, error, onSubmit, query, submitSucceeded, auth: {resourceName, messages, viewPlugin: {renderInput, SubmitButton, Form, FormError}}}) => {
   const submitWithQuery = form => {
     return onSubmit({
       ...form,
@@ -24,16 +25,18 @@ const ResetPasswordForm = reduxForm({
         type="password"
         component={renderInput}
         label="Password"
+        validate={required}
       />
       <Field
         name="password_confirmation"
         type="password"
         component={renderInput}
         label="Password Again"
+        validate={required}
       />
       <SubmitButton
         label={submitting ? 'Resetting Password...' : 'Reset Password'}
-        disabled={submitting}
+        disabled={!valid || submitting}
       />
       {error && <FormError>{error}</FormError>}
     </Form>

@@ -5,3 +5,4 @@ export {default as RequestReconfirm} from './RequestReconfirm';
 export {default as RequestResetPassword} from './RequestResetPassword';
 export {default as ResetPassword} from './ResetPassword';
 export {default as SignUp} from './SignUp';
+export {default as User} from './User';
