@@ -9,7 +9,7 @@ describe('<AuthLinksComponent />', () => {
   const currentUser = {isLoggedIn: false};
   const AuthLinksList = ({children}) => <ul>{children}</ul>;
   const AuthLinksListItem = ({children}) => <li>{children}</li>;
-  const match = {path: 'no-match'};
+  const location = {pathname: 'no-match'};
 
   it('should render list with 4 links', () => {
     initReactDevise();
@@ -18,7 +18,7 @@ describe('<AuthLinksComponent />', () => {
       AuthLinksList={AuthLinksList}
       AuthLinksListItem={AuthLinksListItem}
       currentUser={currentUser}
-      match={match}
+      location={location}
     />);
     const tree = shallowToJson(component);
     [
@@ -44,7 +44,7 @@ describe('<AuthLinksComponent />', () => {
       AuthLinksList={AuthLinksList}
       AuthLinksListItem={AuthLinksListItem}
       currentUser={currentUser}
-      match={match}
+      location={location}
     />);
     const tree = shallowToJson(component);
     expect(tree.children.some(n => n.props.path === '/users/foo' && n.children[0] === 'Foo Bar')).toBeTruthy();

@@ -1,20 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getConfig} from '../config/index';
-import {withRouter, Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
-const AuthLinkItem = ({component: Component, path, currentPath, children}) => {
-  if (path === currentPath) {
-    return null;
-  }
-  return (
-    <Component>
-      <Link to={path}>{children}</Link>
-    </Component>
-  );
-};
-
-const AuthLinksComponent = ({currentUser, match, resourceName, AuthLinksList, AuthLinksListItem}) => {
+const AuthLinksComponent = ({currentUser, location, resourceName, AuthLinksList, AuthLinksListItem}) => {
   if (currentUser.isLoggingIn) {
     return <div>Logging in...</div>;
   }
@@ -26,16 +15,15 @@ const AuthLinksComponent = ({currentUser, match, resourceName, AuthLinksList, Au
   return (
     <AuthLinksList>
       {linkableRouteNames.map(routeName => {
-        const path = `/${resourceName}${routes[routeName].path}`;
+        const route = routes[routeName];
+        const path = `/${resourceName}${route.path}`;
         return (
-          <AuthLinkItem
+          <AuthLinksListItem
             key={path}
             path={path}
-            currentPath={match.path}
-            component={AuthLinksListItem}
-          >
-            {routes[routeName].linkText}
-          </AuthLinkItem>
+            route={route}
+            location={location}
+          />
         );
       })}
     </AuthLinksList>

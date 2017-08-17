@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const plugin = ({
   formProps = {
@@ -77,8 +78,11 @@ const plugin = ({
   const AuthLinksList = ({children}) => {
     return <ul {...authLinksListProps}>{children}</ul>;
   };
-  const AuthLinksListItem = ({children}) => {
-    return <li {...authLinksListItemProps}>{children}</li>;
+  const AuthLinksListItem = ({path, route: {linkText}, location: {pathname}}) => {
+    if (path === pathname) {
+      return null;
+    }
+    return <li {...authLinksListItemProps}><Link to={path}>{linkText}</Link></li>;
   };
   const Heading = ({children}) => {
     return <h1 {...headingProps}>{children}</h1>;
