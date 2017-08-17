@@ -107,14 +107,14 @@ To customize the appearance and behavior of React Devise, pass a settings object
 
 ```js
 import ReactDeviseMaterialUI from 'react-devise-material-ui';
-import {Form, Alert, UnstyledList, UnstyledListItem, FormError, AuthHeading, AuthViewContainer} from '../components';
+import {Form, Alert, UnstyledList, AuthListItem, FormError, AuthHeading, AuthViewContainer} from '../components';
 
 const myCustomPlugin = {
   Form,
   FormError,
   Alert,
   AuthLinksList: UnstyledList,
-  AuthLinksListItem: UnstyledListItem,
+  AuthLinksListItem: AuthListItem,
   Heading: AuthHeading,
   View: AuthViewContainer
 };
@@ -138,7 +138,7 @@ initReactDevise({
 | `clientResourceName`        | "users"       | The first node in the route to each auth view. |
 | `apiResourceName`           | "auth"        | The resource name used by Devise on the server. The first node in the path of API calls. |
 | `apiHost`                   | `undefined`   | Omit unless your devise API is host on a different domain than the website. |
-| `viewPlugins`               | []            | Use one or more view plugins to inject custom components into React Devise views.<br><br>View plugins are merged in order *after* the default plugin. Taking the code sample above, `myCustomPlugin supersede `ReactDeviseMaterialUI` plugin, which in turn supersede the default plugin. |
+| `viewPlugins`               | []            | Use one or more view plugins to inject custom components into React Devise views.<br><br>View plugins are merged in order *after* the default plugin. Taking the code sample above, `myCustomPlugin supersede `ReactDeviseMaterialUI` plugin, which in turn supersede the default plugin.<br/><br/>To see how to build custom plugin components, [take a look at the default plugin](https://github.com/timscott/react-devise/blob/master/src/config/viewPluginPlain.js).|
 | `defaultViewPluginSettings` | {}            | To customize the default plugin, provide a settings object. This can be used in conjunction with custom plugins or without them.<br><br>To see the available settings, find the default plugin [here]( https://github.com/timscott/react-devise/blob/master/src/config/viewPluginPlain.js). |
 | `messages`                  | {}            | Override the default messages used by React Devise. Default messages are [here](https://github.com/timscott/react-devise/blob/master/src/config/defaultMessages.js). |
 
