@@ -3,8 +3,8 @@ import {getConfig} from './config/index';
 
 const withAuth = WrappedComponent => {
   const Authorized = props => {
-    const {auth} = getConfig();
-    return <WrappedComponent auth={auth} {...props} />;
+    const config = getConfig();
+    return <WrappedComponent auth={config} {...props} />;
   };
   return Authorized;
 };

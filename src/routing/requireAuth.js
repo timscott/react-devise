@@ -19,7 +19,7 @@ const requireAuth = (WrappedComponent, {authorize, ...props} = {}) => {
         from: location
       }
     };
-    return <Redirect to={to}/>;
+    return <Redirect to={to} />;
   };
   Authorizer = withRouter(Authorizer);
   const mapStateToProps = state => {

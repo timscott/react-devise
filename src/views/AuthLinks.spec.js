@@ -1,6 +1,6 @@
 import React from 'react';
-import {shallow, mount} from 'enzyme';
-import {shallowToJson, mountToJson} from 'enzyme-to-json';
+import {mount} from 'enzyme';
+import {mountToJson} from 'enzyme-to-json';
 import {AuthLinksComponent} from './AuthLinks';
 import {initReactDevise} from '../config';
 

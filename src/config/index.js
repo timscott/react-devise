@@ -35,15 +35,6 @@ class Config {
       return result;
     }, {});
   }
-  get auth() {
-    return {
-      viewPlugin: this.viewPlugin,
-      clientResourceName: this.clientResourceName,
-      messages: this.messages,
-      AuthLinks: this.AuthLinks,
-      views: this.views
-    };
-  }
 }
 
 const getConfig = () => instance;

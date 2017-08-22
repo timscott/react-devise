@@ -6,14 +6,15 @@ import requireAuth from './requireAuth';
 const defaultNotFoundComponent = () => <div>Not Found</div>;
 
 const AuthRoutesComponent = ({wrapper: Wrapper = Route, notFoundComponent = defaultNotFoundComponent} = {}) => {
-  const {auth, routes} = getConfig();
+  const config = getConfig();
+  const {clientResourceName, routes} = config;
   return (
     <Switch>
       {Object.keys(routes).map(routeName => {
         const route = routes[routeName];
-        const fullPath = `/${auth.clientResourceName}${route.path ? route.path : ''}`;
+        const fullPath = `/${clientResourceName}${route.path ? route.path : ''}`;
         const component = props => <route.component
-          auth={auth}
+          auth={config}
           {...props}
         />;
         const routeProps = {
@@ -45,8 +46,8 @@ const authRoutes = ({wrapper, notFound} = {}) => {
     );
     instance = chooseRoute;
   }
-  const {auth} = getConfig();
-  return <Route path={`/${auth.clientResourceName}`} component={instance} />;
+  const {clientResourceName} = getConfig();
+  return <Route path={`/${clientResourceName}`} component={instance} />;
 };
 
 export {
