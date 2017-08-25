@@ -318,7 +318,7 @@ end
 
 ### Devise Emails
 
-(See docs here)[Devise-Server-Setup]
+[See docs here](Devise-Server-Setup)
 
 ## To Do
 
