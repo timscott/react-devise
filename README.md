@@ -318,67 +318,7 @@ end
 
 ### Devise Emails
 
-Next, we need to change the URLs in our emails to be the *client side* routes. (NOTE: Replace "user" and "users" if you set a different `clientResourceName`.)
-
-```ruby
-# /app/helpers/users_mailer_helper.rb
-
-module UsersMailerHelper
-
-  url_defaults = Rails.configuration.action_mailer.default_url_options
-  protocol = url_defaults[:protocol] || 'http'
-  port = ":#{url_defaults[:port]}" if url_defaults[:port].present?
-
-  Devise::URL_HELPERS.each do |module_name, actions|
-    actions.each do |action|
-      method = ['user', action, module_name, 'url'].compact.join '_'
-      path = ['users', module_name, action].compact.join '/'
-
-      define_method method do |params = nil|
-        query = "?#{params.map {|k,v| "#{k}=#{v}"}.join('&')}" if params.present?
-        "#{protocol}://#{url_defaults[:host]}#{port}/#{path}#{query}"
-      end
-    end
-  end
-
-end
-```
-
-```ruby
-# /app/mailers/users_mailer.rb
-
-class UsersMailer < Devise::Mailer
-  helper :users_mailer # gives access to all helpers defined within `mailer_helper`.
-  default template_path: 'devise/mailer' # to make sure that your mailer uses the devise views
-end
-```
-
-Next, you need to edit your mailers to use the client side route helpers. For example:
-
-```ruby
-<p>Welcome <%= @email %>!</p>
-
-<p>You can confirm your account email through the link below:</p>
-
-<p><%= link_to 'Confirm my account', user_confirmation_url(confirmation_token: @token) %></p>
-```
-
-### Devise Config
-
-Finally, apply some settings in your devise initializer:
-
-```ruby
-# config/initializers/devise.rb
-
-config.warden do |manager|
-  manager.failure_app = CustomAuthFailure
-end
-
-config.mailer = 'UsersMailer'
-
-# Needs to not include :json or wildcards that match json.
-config.navigational_formats = [:html]
-```
+(See docs here)[Devise-Server-Setup]
 
 ## To Do
 
