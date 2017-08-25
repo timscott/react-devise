@@ -318,7 +318,7 @@ end
 
 ### Devise Emails
 
-[See docs here](Devise-Server-Setup)
+[See docs here](https://github.com/timscott/react-devise/wiki/Devise-Server-Setup)
 
 ## To Do
 
