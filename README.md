@@ -255,69 +255,6 @@ networkInterface.use([{
 
 ## Devise Server Setup
 
-Eventually we want to create a gem to avoid repeating a lot of boilerplate. For now, you have to set it up yourself.
-
-### JWT Authentication
-
-First, we'll use the [devise-jwt](https://github.com/waiting-for-dev/devise-jwt) gem.
-
-```ruby
-# Gemfile
-
- gem 'devise-jwt'
-```
-
-Add the `devise-jwt` bits in the user model (or whatever your authenticated resource is).
-
-```ruby
-# /app/models/user.rb
-
-class User < ApplicationRecord
-  devise :database_authenticatable, :registerable, :recoverable, :trackable, :validatable, :confirmable,
-    :jwt_authenticatable, jwt_revocation_strategy: Devise::JWT::RevocationStrategies::Null
-
-  def jwt_payload
-    {
-      user_id: id,
-      email: email,
-      firstName: first_name,
-      lastName: last_name
-    }
-  end
-
-end
-```
-
-### Devise Routes
-
-Next, we might need to set a custom path in our routes to match the `apiResourceName` if it's not the same as your user model name.
-
-```ruby
-# routes.rb
-
-devise_for :users, path: :auth
-```
-
-### Devise Failure App
-
-Next, we need to change auth failure behavior:
-
-```ruby
-# /app/controllers/custom_auth_failure.rb
-
-class CustomAuthFailure < Devise::FailureApp
-
-  def respond
-    self.status = :unauthorized
-    self.content_type = :json
-    self.response_body = {errors: ['Invalid login credentials']}.to_json
-  end
-
-end
-```
-
-### Devise Emails
-
 [See docs here](https://github.com/timscott/react-devise/wiki/Devise-Server-Setup)
 
 ## To Do
