@@ -35,7 +35,7 @@ Have a look at a reference implementation.
 
 ## Documentation
 
-[Docs here](https://github.com/timscott/react-devise/wiki/Home)
+[Documenation wiki](https://github.com/timscott/react-devise/wiki/Home)
 
 ## To Do
 
