@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Devise has long been the go-to authentication library for Rails apps. Just drop Devise into your Rails app, make a few tweaks, and get on with building awesome business features. But what happens when we want to build single page apps? A lot of Devise functionality is wrapped up with server side routing and rendering. When Rails is API only, must we leave Devise behind?
+Devise has long been the go-to authentication library for Rails apps. Just drop Devise into your Rails app, make a few tweaks, and get on with building awesome business features. But what happens when you want to build single page apps? Must of Devise's functionality is wrapped up with server side routing and rendering. When using Rails strictly as data API, must your leave Devise behind?
 
 It turns out it's not very hard to purpose Devise as an authentication backend. But that leaves undone a bunch of view-related functionality comes with Devise out of the box.
 
