@@ -5,7 +5,7 @@ import requireAuth from './requireAuth';
 
 const defaultNotFoundComponent = () => <div>Not Found</div>;
 
-const AuthRoutesComponent = ({wrapper: Wrapper = Route, notFoundComponent = defaultNotFoundComponent} = {}) => {
+const AuthRoutesComponent = ({wrapper: Wrapper = Route, notFoundComponent: NotFoundComponent = defaultNotFoundComponent} = {}) => {
   const config = getConfig();
   const {clientResourceName, routes} = config;
   return (
@@ -29,19 +29,19 @@ const AuthRoutesComponent = ({wrapper: Wrapper = Route, notFoundComponent = defa
         }
         return <Wrapper {...routeProps}/>;
       })}
-      <Wrapper component={notFoundComponent}/>
+      <NotFoundComponent />
     </Switch>
   );
 };
 
 let instance;
 
-const authRoutes = ({wrapper, notFound} = {}) => {
+const authRoutes = ({wrapper, notFoundComponent} = {}) => {
   if (!instance) {
     const chooseRoute = () => (
       <AuthRoutesComponent
         wrapper={wrapper}
-        notFound={notFound}
+        notFoundComponent={notFoundComponent}
       />
     );
     instance = chooseRoute;
