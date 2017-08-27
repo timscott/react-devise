@@ -6,7 +6,7 @@
 
 Devise has long been the go-to authentication library for Rails apps. Just drop Devise into your Rails app, make a few tweaks, and get on with building awesome business features. 
 
-Much of Devise's functionality involves server side routing and rendering, so what about single page apps? Does Devise do that? Must your leave Devise behind when you move to React? Maybe not. It turns out it's pretty easy to purpose Devise as an authentication backend. 
+Much of Devise's functionality involves server side routing and rendering, so what about single page apps? Does Devise do that, or must you leave Devise behind when you move to React? Maybe not. It turns out it's pretty easy to purpose Devise as an authentication backend. 
 
 But that leaves undone a bunch of routing and view related functionality that Devise provides out of the box.
 
