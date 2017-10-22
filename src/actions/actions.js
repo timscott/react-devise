@@ -101,11 +101,11 @@ const signUp = (data, dispatch) => {
   });
 };
 
-const doLogin = (route, data, dispatch) => {
+const doLogin = (data, dispatch, {route, fetchFunc}) => {
   dispatch({
     type: 'LOGGING_IN'
   });
-  return fetchWithUserForm(ROUTES.login, data).then(response => {
+  return fetchFunc(route, data).then(response => {
     if (response.status === 401) {
       dispatch({
         type: 'LOGIN_FAILED'
@@ -117,11 +117,17 @@ const doLogin = (route, data, dispatch) => {
 };
 
 const login = (data, dispatch) => {
-  return doLogin(ROUTES.login, data, dispatch);
+  return doLogin(data, dispatch, {
+    route: ROUTES.login,
+    fetchFunc: fetchWithUserForm
+  });
 };
 
 const providerLogin = function providerLogin(data, dispatch) {
-  return doLogin(ROUTES.providerLogin, data, dispatch);
+  return doLogin(data, dispatch, {
+    route: ROUTES.providerLogin,
+    fetchFunc: fetch
+  });
 };
 
 const confirm = token => {
