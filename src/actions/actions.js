@@ -39,6 +39,10 @@ const ROUTES = {
   requestReconfirm: {
     method: 'POST',
     path: 'confirmation'
+  },
+  providerLogin: {
+    method: 'POST',
+    path: ':provider'
   }
 };
 
@@ -53,7 +57,17 @@ const ensureValid = response => {
 
 const fetch = (route, data) => {
   const {apiHost = '', apiResourceName} = getConfig();
-  const uri = [apiHost, apiResourceName, route.path].join('/');
+
+  // Render uri with any params, and remove those params from the data payload.
+  let uri = [apiHost, apiResourceName, route.path].join('/');
+  Object.keys(data).forEach(param => {
+    const regex = new RegExp(`\/:${param}(\/|$)`, 'g');
+    if (uri.match(regex)) {
+      uri = uri.replace(regex, `/${data[param]}`);
+      delete data[param];
+    }
+  });
+
   return fetchJSON(uri, {
     method: route.method,
     data
@@ -66,7 +80,7 @@ const fetchWithUserForm = (route, data) => { // eslint-disable-line camelcase
   }).then(ensureValid);
 };
 
-const tryLogin = (response, dispatch) => {
+const tryLoggedIn = (response, dispatch) => {
   const auth = response.headers.get('Authorization');
   if (auth) {
     const [_, authToken] = auth.split(' '); // eslint-disable-line no-unused-vars
@@ -83,11 +97,11 @@ const tryLogin = (response, dispatch) => {
 
 const signUp = (data, dispatch) => {
   return fetchWithUserForm(ROUTES.signUp, data).then(response => {
-    return tryLogin(response, dispatch);
+    return tryLoggedIn(response, dispatch);
   });
 };
 
-const login = (data, dispatch) => {
+const doLogin = (route, data, dispatch) => {
   dispatch({
     type: 'LOGGING_IN'
   });
@@ -100,6 +114,14 @@ const login = (data, dispatch) => {
     }
     return tryLogin(response, dispatch);
   });
+};
+
+const login = (data, dispatch) => {
+  return doLogin(ROUTES.login, data, dispatch);
+};
+
+const providerLogin = function providerLogin(data, dispatch) {
+  return doLogin(ROUTES.providerLogin, data, dispatch);
 };
 
 const confirm = token => {
@@ -121,7 +143,7 @@ const updateUser = (data, dispatch) => {
     if (response.status === 401) {
       throw new UnauthorizedError();
     }
-    return tryLogin(response, dispatch);
+    return tryLoggedIn(response, dispatch);
   });
 };
 
@@ -144,6 +166,7 @@ const destroyUser = (data, dispatch) => {
 export {
   signUp,
   login,
+  providerLogin,
   logout,
   confirm,
   requestReconfirm,
