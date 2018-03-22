@@ -1,6 +1,6 @@
 {
   "name": "react-devise",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "A react front-end for a ruby on rails devise authentication server.",
   "main": "lib/index.js",
   "scripts": {
@@ -38,12 +38,14 @@
     "es6-error": "^4.0.2",
     "fetch-bluebird": "^1.0.3",
     "jwt-decode": "^2.2.0",
-    "react": "^15.5.4",
-    "react-redux": "^5.0.4",
-    "react-router-dom": "^4.1.1",
-    "redux": "^3.6.0",
-    "redux-form": "^6.6.3",
     "url": "^0.11.0"
+  },
+  "peerDependencies": {
+    "react": ">= 15.5.4 < 17.0.0-0",
+    "redux-form": ">=6.6.3 < 8.0.0",
+    "react-router-dom": "^4.1.1",
+    "react-redux": "^5.0.4",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -58,8 +60,10 @@
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-react": "^7.4.0",
     "jest": "^20.0.4",
+    "react": "^15.5.4",
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
+    "redux-form": "^7.0.0",
     "redux-mock-store": "^1.2.3"
   }
 }
