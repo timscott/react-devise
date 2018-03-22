@@ -26,7 +26,8 @@ describe('<AuthRoutesComponent />', () => {
     initReactDevise(auth);
     const component = shallow(<AuthRoutesComponent />);
     expect(component.find(Switch)).toHaveLength(1);
-    expect(component.find(Route)).toHaveLength(7);
+    expect(component.find(Route)).toHaveLength(6);
+    // TODO: Test for the edit user route.
   });
   it('should render with custom views', () => {
     initReactDevise({
@@ -39,7 +40,7 @@ describe('<AuthRoutesComponent />', () => {
       }
     });
     const component = shallow(<AuthRoutesComponent />);
-    expect(component.find(Route)).toHaveLength(7);
+    expect(component.find(Route)).toHaveLength(6);
     const tree = shallowToJson(component);
     expect(tree.children.some(n => n.props.path === '/users/foo')).toBeTruthy();
 

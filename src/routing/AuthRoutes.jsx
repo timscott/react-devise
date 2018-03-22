@@ -27,7 +27,7 @@ const AuthRoutesComponent = ({wrapper: Wrapper = Route, notFoundComponent: NotFo
           const ResolvedComponent = requireAuth(Wrapper, routeProps);
           return <ResolvedComponent {...routeProps}/>;
         }
-        return <Wrapper {...routeProps}/>;
+        return <Wrapper key={routeName} {...routeProps}/>;
       })}
       <NotFoundComponent />
     </Switch>
