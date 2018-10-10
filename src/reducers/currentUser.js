@@ -1,4 +1,5 @@
 import jwtDecode from 'jwt-decode';
+import { hasAuthToken, getAuthToken } from '..//actions/authTokenStore';
 
 const initialState = {};
 
@@ -17,6 +18,12 @@ const currentUser = (state = initialState, action) => {
     case 'LOGIN_FAILED':
       return initialState;
     default:
+      if (_.isEmpty(state) && hasAuthToken()) {
+        return {
+            isLoggedIn: true,
+            ...jwtDecode(getAuthToken())
+          };
+      }
       return state;
   }
 };
